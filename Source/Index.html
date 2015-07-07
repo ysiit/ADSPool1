@@ -1,0 +1,694 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>18F Prototype</title>
+ <script type="text/javascript" src="Scripts/jquery.min.js"></script>
+    <script type="text/javascript" src="Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
+    <link href="Content/bootstrap.min.css" type="text/css" rel="stylesheet" />
+    <link href="Content/bootstrap-theme.min.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="Content/font-awesome.min.css" />
+     <script type="text/javascript">
+         $(document).ready(function () {            
+                $.ajax({
+                    url: 'http://api.fda.gov/device/event.json?search=x-ray',
+                    cache: true,
+                    type: 'GET',
+                    dataType: "json",
+                    crossDomain: true,
+                    processData: true
+                }).done(function (data) {
+                    DisplayResult(data);                   
+                });
+            });
+            function DisplayResult(data) {                
+                $(data.results).each(function (index, el) {
+                    $('#ddReportNumber').text(el.report_number);
+                    $('#ddManufacturerContactState').text(el.manufacturer_contact_state);
+                    $('#ddDeviceDateOfManufacturer').text(el.device_date_of_manufacturer);
+                    $('#ddEventType').text(el.event_type);
+                    $('#ddSourceType').text(el.source_type.Userfacility + ', ' + el.source_type.HealthProfessional);
+                    $('#ddManufacturerG1Address1').text(el.manufacturer_g1_address_1);
+                    $('#ddManufacturerContactCountry').text(el.manufacturer_contact_pcountry);
+                    $('#ddReportToManufacturer').text(el.report_to_manufacturer);
+                    $('#ddPreviousUseCode').text(el.previous_use_code);
+                    $('#ddManufacturerPostalCode').text(el.manufacturer_postal_code);
+                    $('#ddManufacturerCity').text(el.manufacturer_city);
+                    $('#ddReporterOccupationCode').text(el.reporter_occupation_code);
+                    $('#ddManufacturerContactExtension').text(el.manufacturer_contact_extension);
+                    if (el.date_facility_aware != "") {
+                        var dt = new Date(el.date_facility_aware.substring(0, 4), el.date_facility_aware.substring(4, 2), el.date_facility_aware.substring(el.date_facility_aware.length - 2));
+                        $('#ddDateOfFacilityAware').text(dt.toLocaleDateString());
+                    }                   
+                    $('#ddManufacturerState').text(el.manufacturer_state);
+                    $('#ddEventLocation').text(el.event_location);
+                    if (el.date_of_event != "") {
+                        var dt = new Date(el.date_of_event.substring(0, 4), el.date_of_event.substring(4, 2), el.date_of_event.substring(el.date_of_event.length - 2));
+                        $('#ddDateOfEvent').text(dt.toLocaleDateString());
+                    }     
+                     $('#ddManufacturerG1Country').text(el.manufacturer_g1_country);
+                    $('#ddRemovalCorrectionNumber').text(el.removal_correction_number);
+                    $('#ddManufacturerG1City').text(el.manufacturer_g1_city);
+                    $('#ddDistribbutorZipCodeExt').text(el.distributor_zip_code_ext);
+                    $('#ddManufacturerZipCode').text(el.manufacturer_zip_code);
+                    if (el.date_received != "") {
+                        var dt = new Date(el.date_received.substring(0, 4), el.date_received.substring(4, 2), el.date_received.substring(el.date_received.length - 2));
+                        $('#ddDateReceived').text(dt.toLocaleDateString());
+                    }    
+                     $('#ddManufacturerContactAddress').text(el.manufacturer_contact_address_2);
+                    $('#ddDateOfReport').text(el.date_report);
+                    $('#ddManufacturerContactAddress1').text(el.manufacturer_contact_address_1);
+                    $('#ddManufacturerContactLocal').text(el.manufacturer_contact_plocal);
+                    $('#ddManufacturerName').text(el.manufacturer_name);
+                    $('#ddTypeOfReport').text(el.type_of_report.Initialsubmission + ', ' + el.type_of_report.Followup);
+                    $('#ddReprocessedandReusedFLag').text(el.reprocessed_and_reused_flag);
+                    $('#ddManufacturerLinkFlag').text(el.manufacturer_link_flag);
+                    $('#ddmczc').text(el.manufacturer_contact_zip_code);
+                    $('#ddmgzce').text(el.manufacturer_g1_zip_code_ext);
+                    $('#ddmanufacturer_contact_country').text(el.manufacturer_contact_country);
+                    $('#dddistributor_zip_code').text(el.distributor_zip_code);
+                    $('#ddreport_source_code').text(el.report_source_code);
+                    $('#dddistributor_name').text(el.distributor_name);
+                    if (el.date_manufacturer_received != "") {
+                        var dt = new Date(el.date_manufacturer_received.substring(0, 4), el.date_manufacturer_received.substring(4, 2), el.date_manufacturer_received.substring(el.date_manufacturer_received.length - 2));
+                        $('#date_manufacturer_received').text(dt.toLocaleDateString());
+                    }
+                    $('#ddmanufacturer_contact_postal_code').text(el.manufacturer_contact_postal_code);
+                    $('#ddmanufacturer_contact_city').text(el.manufacturer_contact_city);
+                    $('#event_key').text(el.event_key);
+                    $('#ddmanufacturer_g1_zip_code').text(el.manufacturer_g1_zip_code);
+                    $('#ddmanufacturer_g1_state').text(el.manufacturer_g1_state);
+                   
+                    $('#ddpatient_sequence_number').text(el.patient.patient_sequence_number);
+                    $('#ddsequence_number_treatment').text(el.patient.sequence_number_treatment);
+                    $('#ddsequence_number_outcome').text(el.patient.sequence_number_outcome);
+                    $('#ddmanufacturer_contact_phone_number').text(el.manufacturer_contact_phone_number);
+                    $('#ddmanufacturer_zip_code_ext').text(el.manufacturer_zip_code_ext);
+                    $('#ddmanufacturer_contact_pcity').text(el.manufacturer_contact_pcity);
+                    $('#ddmanufacturer_g1_postal_code').text(el.manufacturer_g1_postal_code);
+                    $('#ddmanufacturer_contact_area_code').text(el.manufacturer_contact_area_code);
+                    $('#ddadverse_event_flag').text(el.adverse_event_flag);
+                    $('#ddsingle_use_flag').text(el.single_use_flag);
+                    $('#dddistributor_city').text(el.distributor_city);
+                    $('#ddmanufacturer_country').text(el.manufacturer_country);
+                    $('#ddmanufacturer_contact_f_name').text(el.manufacturer_contact_f_name);
+                    $('#dddistributor_state').text(el.distributor_state);
+                    $('#ddnumber_devices_in_event').text(el.number_devices_in_event);
+                    $('#ddmanufacturer_contact_exchange').text(el.manufacturer_contact_exchange);
+                    $('#dddistributor_address_2').text(el.distributor_address_2);
+                    $('#ddmanufacturer_contact_t_name').text(el.manufacturer_contact_t_name);
+                    $('#dddistributor_address_1').text(el.distributor_address_1);
+                    $('#ddmanufacturer_g1_address_2').text(el.manufacturer_g1_address_2);
+                    $('#ddhealth_professional').text(el.health_professional);
+                    $('#ddinitial_report_to_fda').text(el.initial_report_to_fda);
+                    $('#ddnumber_patients_in_event').text(el.number_patients_in_event);
+                    $('#ddmdr_report_key').text(el.mdr_report_key);
+                    $('#ddreport_to_fda').text(el.report_to_fda);
+                    $('#ddmanufacturer_address_2').text(el.manufacturer_address_2);
+                    $('#manufacturer_address_1').text(el.manufacturer_address_1);
+                    $('#ddmanufacturer_g1_name').text(el.manufacturer_g1_name);
+                    $('#ddmanufacturer_contact_zip_ext').text(el.manufacturer_contact_zip_ext);
+                    $('#ddmanufacturer_contact_l_name').text(el.manufacturer_contact_l_name);
+                    $('#dddate_removed_flag').text(el.device.date_removed_flag);
+                    $('#ddother_id_number').text(el.device.other_id_number);
+                    $('#manufacturer_d_zip_code_ext').text(el.device.manufacturer_d_zip_code_ext);
+                    $('#ddbaseline_510_k__number').text(el.device.baseline_510_k__number);
+                    $('#ddimplant_flag').text(el.device.implant_flag);
+                    $('#dddevice_operator').text(el.device.device_operator);
+                    $('#ddbrand_name').text(el.device.brand_name);
+                    $('#ddlot_number').text(el.device.lot_number);
+                    $('#ddmanufacturer_d_state').text(el.device.manufacturer_d_state);
+                    $('#ddgeneric_name').text(el.device.generic_name);
+                    $('#ddmanufacturer_d_name').text(el.device.manufacturer_d_name);
+                    $('#dddevice_availability').text(el.device.device_availability);
+                    $('#ddmanufacturer_d_city').text(el.device.manufacturer_d_city);
+                    $('#dddevice_sequence_number').text(el.device.device_sequence_number);
+                    $('#dddevice_age_text').text(el.device.device_age_text);
+                    $('#ddcatalog_number').text(el.device.catalog_number);
+                    $('#ddbaseline_510_k__exempt_flag').text(el.device.baseline_510_k__exempt_flag);                   
+                    $('#ddmanufacturer_d_address_2').text(el.device.manufacturer_d_address_2);
+                    $('#ddmanufacturer_d_address_1').text(el.device.manufacturer_d_address_1);
+                    $('#ddmanufacturer_d_postal_code').text(el.device.manufacturer_d_postal_code);
+                    $('#ddbaseline_510_k__flag').text(el.device.baseline_510_k__flag);
+                    $('#ddmodel_number').text(el.device.model_number);
+                    $('#ddmanufacturer_d_zip_code').text(el.device.manufacturer_d_zip_code);
+                    $('#device_report_product_code').text(el.device.device_report_product_code);
+                    $('#dddate_returned_to_manufacturer').text(el.device.date_returned_to_manufacturer);
+                    $('#ddmanufacturer_d_country').text(el.device.manufacturer_d_country);
+                    $('#dddevice_event_key').text(el.device.device_event_key);
+                    $('#dddevice_evaluated_by_manufacturer').text(el.device.device_evaluated_by_manufacturer);
+                });
+            }
+     </script>
+</head>
+<body>
+<section id="Header">
+<div style="border-bottom: 1px solid rgb(100, 100, 100);" class="container-fluid Devpoo1-hhs-masthead">
+    <div class="container">
+            <!-- first row -->
+            <div class="row Devpoo1-hhs-masthead">
+                <div class="col-md-12 col-lg-12 Devpoo1-topblackustext">
+                    <a title="U.S. Department of Health and Human Services"></a>
+                </div>
+            </div>
+            <!--/ first row -->  
+    </div>
+</div>
+<div class="container-fluid Devpoo1-bluebgfulllength">
+   <div class="container Devpoo1-no-padding">
+        <!-- Second row -->
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 Devpoo1-no-padding">
+           
+                 <div class="col-xs-12 col-sm-10 col-md-10 col-lg-11 Devpoo1-no-padding">
+                    <div class="col-xs-5 col-sm-3 col-md-2 Devpoo1-fda-logo Devpoo1-no-padding">
+                        <a href="#" title="FDA Homepage" class="Devpoo1-gov-webicon fda white"></a>
+                    </div>
+                    <div class="col-xs-7 col-sm-8 col-md-10 col-lg-7 Devpoo1-fda-name Devpoo1-no-padding">
+                        <h1>U.S. Food and Drug Administration</h1>
+                         <p class="visible-lg Devpoo1-fda-tagline">Protecting and Promoting <em>Your</em> Health</p>
+                    </div>
+                </div>  
+                <div class="col-xs-12 col-sm-2 col-md-2 col-lg-1 Devpoo1-no-padding">
+                    <div class="Devpoo1-no-padding text-right">
+                        <img alt="" src="images/18flogo.jpg" class="eighteenfinvisible">
+                    </div>
+                </div>
+           
+		</div>
+        <!--/ second row -->
+    </div>
+</div>
+</section>
+
+
+<section id="table">
+	<div id="outerwrapper" class="container-fluid">
+    	<div style="height: auto;" class="container Devpoo1-tableleftright">
+        	<div id="row" class="row">
+                <div class="col-md-12 col-lg-12 no-padding">
+                    
+                    
+                    <div class="col-md-12 col-lg-12 crumbs-container">
+                       <ul class="breadcrumb contentpage margin-top20 Devpoo1-breadcrumb">
+                            <li><a href="#">Home</a></li>
+                            <li class="secondLast"><a href="#">Devices</a></li>                            
+                        </ul>
+                    </div>
+                    
+                    
+                    
+                    <div class="row">
+                    <div class="col-lg-12">
+                    	<div class="col-lg-12 col-xs-12">
+                        <h2>Device Information</h2>
+                        </div>                        
+                    </div>
+                    </div>
+                    
+                    
+                    
+                   
+                   
+                    
+                    <div class="col-lg-12 paddingtopbot">
+                        <div class="col-lg-12 Devpoo1-no-padding">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                Device Details
+                                </div>
+                                <div class="panel-body">                            
+                                   <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 Devpoo1-no-padding">
+                                        <div class="table-responsive Devpoo1-well">
+                                           <!-- list start -->
+                                           <dl class="dl-horizontal card-description"> 
+                                               <dt>Report Number: </dt>
+                                               <dd id="ddReportNumber"></dd> 
+                                               
+                                               <dt>Manufacturer Contact State: </dt>                                            
+                                               <dd id="ddManufacturerContactState"></dd> 
+                                               
+                                               <dt>Device Date Of Manufacturer: </dt>                                            
+                                               <dd id="ddDeviceDateOfManufacturer"></dd> 
+                                               
+                                               <dt>Event Type:</dt> 
+                                               <dd id="ddEventType"></dd>
+                                               
+                                               <dt>Source Type: </dt> 
+                                               <dd id="ddSourceType"></dd>
+                                               
+                                               <dt>Manufacturer G1 Address 1:</dt>  
+                                               <dd id="ddManufacturerG1Address1"></dd>
+                                               
+                                               <dt>Manufacturer Contact Country:</dt>  
+                                               <dd id="ddManufacturerContactCountry"></dd>
+                                               
+                                               <dt>Report To Manufacturer:</dt>  
+                                               <dd id="ddReportToManufacturer"></dd>
+                                               
+                                               <dt>Previous Use Code:</dt>  
+                                               <dd id="ddPreviousUseCode"></dd>
+                                               
+                                               <dt>Manufacturer Postal Code:</dt> 
+                                               <dd id="ddManufacturerPostalCode"></dd>
+                                               
+                                               <dt>Manufacturer City:</dt>  
+                                               <dd id="ddManufacturerCity"></dd>
+                                               
+                                               <dt>Reporter Occupation Code:</dt>  
+                                               <dd id="ddReporterOccupationCode"></dd>
+                                               
+                                               <dt>Manufacturer Contact Extension:</dt> 
+                                               <dd id="ddManufacturerContactExtension"></dd>
+                                               
+                                               <dt>Date Facility Aware:</dt>  
+                                               <dd id="ddDateOfFacilityAware"></dd>
+                                               
+                                               <dt>Manufacturer State:</dt>  
+                                               <dd id="ddManufacturerState"></dd>
+                                               
+                                               <dt>Event Location:</dt>  
+                                               <dd id="ddEventLocation"></dd>
+                                               
+                                               <dt>Date Of Event:</dt>  
+                                               <dd id="ddDateOfEvent"></dd>
+                                               
+                                               <dt>Manufacturer G1 Country:</dt>  
+                                               <dd id="ddManufacturerG1Country">US</dd>
+                                               
+                                               <dt>Removal Correction Number:</dt>  
+                                               <dd id="ddRemovalCorrectionNumber"></dd>
+                                               
+                                               <dt>Manufacturer G1 City:</dt>  
+                                               <dd id="ddManufacturerG1City"></dd>
+                                               
+                                               
+                                               
+                                               <div class="col-md-12 col-lg-12 Devpoo1-no-padding">
+                                                <ul class="breadcrumb contentpage margin-top20 Devpoo1-breadcrumb">
+                                                    <li><h4>MDR Text</h4></li>           
+                                                </ul>
+                                               </div>
+                                               
+                                               
+                                               
+                                               <dt>Text": "(B)(4). CONCLUSION:</dt> 
+                                                <dd>THE PRODUCT UPON WHICH THIS MEDWATCH IS BASED IS ANTICIPATED. ONCE THE PRODUCT IS RECEIVED, ANY FURTHER INFORMATION DERIVED FROM THE EVALUATION WILL BE SUBMITTED IN A SUPPLEMENTAL 3500A FORM.",
+                                                
+                                                <dt>MDR Text Key:</dt> 
+                                                <dd>12638975</dd>
+                                                
+                                                
+                                                <dt>Text Type Code:</dt> 
+                                                <dd>Additional Manufacturer Narrative</dd>
+                                                
+                                                
+                                                <dt>Patient Sequenc Number:</dt> 
+                                                <dd>1</dd>
+                                                
+                                                        
+                                                <dt>Text:</dt>
+                                                <dd>IT WAS REPORTED THAT A PATIENT UNDERWENT A GYNECOLOGICAL PROCEDURE ON (B)(6) 2011. DURING THE PROCEDURE, THE CPC CONNECTOR ON THE FRONT OF THE UNIT WAS BENT, PREVENTING THE DISPOSABLE FROM FUNCTIONING PROPERLY. A SECOND LIKE DEVICE WAS USED TO COMPLETE THE PROCEDURE WITH NO ADVERSE PATIENT CONSEQUENCES.</dd>
+                                                
+                                                
+                                                <dt>MDR Text Key:</dt>
+                                                <dd>12638945</dd>
+                                                
+                                                
+                                                <dt>Text Type Code:</dt> 
+                                                <dd>Description of Event or Problem</dd>
+                                                
+                                                
+                                                <dt>Patient Sequence Number:</dt> 
+                                                <dd>1</dd>
+                                                
+                                                        
+                                                <dt>Text:</dt> 
+                                                <dd>(B)(4). THE ACTUAL DEVICE INVOLVED IN THIS EVENT WAS RETURNED FOR EVALUATION. THE DEVICE WAS VISUALLY AND FUNCTIONALLY EVALUATED. THE CPC CONNECTOR WAS ALIGNED AND IN THE CORRECT POSITION. IN ADDITION, A REVIEW OF THE DEVICE MANUFACTURING RECORDS WAS CONDUCTED AND THE DEVICE MET ALL FINISHED GOODS RELEASE CRITERIA.</dd>
+                                                
+                                                
+                                                <dt>MDR Text Key:</dt> 
+                                                <dd>13767322</dd>
+                                                
+                                                
+                                                <dt>Text Type Code:</dt> 
+                                                <dd>Additional Manufacturer Narrative</dd>
+                                                
+                                                
+                                                <dt>Patient Sequence Number:</dt> 
+                                                <dd>1</dd>
+                                               
+                                               
+                                                <dt>Distributor Zip Code Ext:</dt> 
+                                                <dd id="ddDistribbutorZipCodeExt"></dd>
+                                                
+                                                <dt>Manufacturer Zip Code:</dt> 
+                                                <dd id="ddManufacturerZipCode"></dd>
+                                                
+                                                <dt >Date Received:</dt> 
+                                                <dd id="ddDateReceived"></dd>
+                                                
+                                                <dt>Manufacturer Contact Address 2:</dt> 
+                                                <dd id="ddManufacturerContactAddress"></dd>
+                                                
+                                                <dt>Date Report:</dt> 
+                                                <dd id="ddDateOfReport"></dd>
+                                                
+                                                <dt>Manufacturer Contact Address 1:</dt> 
+                                                <dd id="ddManufacturerContactAddress1"></dd>
+                                                
+                                                <dt>Manufacturer Contact Local </dt> 
+                                                <dd id="ddManufacturerContactLocal"></dd>
+                                                
+                                                <dt>Manufacturer Name</dt> 
+                                                <dd id="ddManufacturerName"></dd>
+                                                
+                                                <dt>Type Of Report:</dt> 
+                                                <dd id="ddTypeOfReport"></dd>
+                                               
+                                               
+                                                <dt>Reprocessed and Reused Flag:</dt> 
+                                                <dd id="ddReprocessedandReusedFLag"></dd>
+                                                
+                                                <dt>Manufacturer Link Flag:</dt> 
+                                                <dd id="ddManufacturerLinkFlag"></dd>
+                                                
+                                                <dt>Manufacturer Contact Zip Code:</dt> 
+                                                <dd>08876</dd>
+                                                
+                                                <dt>Manufacturer G1 Zip Code Ext:</dt> 
+                                                <dd></dd>
+                                                
+                                                <dt>Manufacturer Contact Country:</dt> 
+                                                <dd id="ddmanufacturer_contact_country">US</dd>
+                                                
+                                                <dt>Distributor Zip Code:</dt> 
+                                                <dd id="dddistributor_zip_code"></dd>
+                                                
+                                                <dt>Report Source Code:</dt> 
+                                                <dd id="ddreport_source_code"></dd>
+                                                
+                                                <dt>Distributor Name:</dt> 
+                                                <dd id="dddistributor_name"></dd>
+                                                
+                                                <dt>Date Manufacturer Received:</dt> 
+                                                <dd id="date_manufacturer_received"></dd>
+                                               
+                                               
+                                                <dt>Manufacturer Contact Postal Code:</dt> 
+                                                <dd id="ddmanufacturer_contact_postal_code"></dd>
+                                                
+                                                
+                                                <dt>Manufacturer Contact City:</dt> 
+                                                <dd id="ddmanufacturer_contact_city"></dd>
+                                                
+                                                
+                                                <dt>Product Problem Flag:</dt> 
+                                                <dd id="ddproduct_problem_flag"></dd>
+                                                
+                                                
+                                                <dt>Event Key:</dt> 
+                                                <dd id="event_key"></dd>
+                                                
+                                                
+                                                <dt>Manufacturer G1 Zip Code:</dt> 
+                                                <dd id="ddmanufacturer_g1_zip_code"></dd>
+                                                
+                                                
+                                                <dt>Manufacturer G1 State:</dt> 
+                                                <dd id="ddmanufacturer_g1_state"></dd>
+
+                                               
+                                                <div class="col-md-12 col-lg-12 Devpoo1-no-padding">
+                                                    <ul class="breadcrumb contentpage margin-top20 Devpoo1-breadcrumb">
+                                                        <li><h4>Patient</h4></li>           
+                                                    </ul>
+                                                </div>
+                                               
+                                               
+                                                
+                                                <dt>Patient Sequence Number:</dt> 
+                                                <dd id="ddpatient_sequence_number"></dd>
+                                                
+                                                <dt>Sequence Number Treatment:</dt> 
+                                                <dd id="ddsequence_number_treatment"></dd>
+                                                
+                                                <dt>Sequence Number Outcome:</dt> 
+                                                <dd id="ddsequence_number_outcome"></dd>
+                                               
+                                                <dt>Manufacturer Contact Phone Number:</dt> 
+                                                <dd id="ddmanufacturer_contact_phone_number"></dd>
+                                                
+                                                <dt>Manufacturer Zip Code Ext:</dt> 
+                                                <dd id="ddmanufacturer_zip_code_ext"></dd>
+                                                
+                                                <dt>Manufacturer Contact City:</dt> 
+                                                <dd id="ddmanufacturer_contact_pcity"></dd>
+                                                
+                                                <dt>Manufacturer G1 Postal Code:</dt> 
+                                                <dd id="ddmanufacturer_g1_postal_code"></dd>
+                                                
+                                                <dt>Manufacturer Contact Area Code:</dt> 
+                                                <dd id="ddmanufacturer_contact_area_code"></dd>
+                                                
+                                                <dt>Adverse Event Flag:</dt> 
+                                                <dd id="ddadverse_event_flag"></dd>
+                                                
+                                                <dt>Single Use Flag:</dt> 
+                                                <dd id="ddsingle_use_flag">N</dd>
+                                                
+                                                <dt>Distributor City:</dt> 
+                                                <dd id="dddistributor_city"></dd>
+                                                
+                                                <dt>Manufacturer Country:</dt> 
+                                                <dd id="ddmanufacturer_country"></dd>
+                                                
+                                                <dt>Manufacturer Contact First Name:</dt> 
+                                                <dd id="ddmanufacturer_contact_f_name"></dd>
+                                                
+                                                <dt>Distributor State:</dt> 
+                                                <dd id="dddistributor_state"></dd>
+                                                
+                                                <dt>Number Ddevices In Event:</dt> 
+                                                <dd id="ddnumber_devices_in_event"></dd>
+                                                
+                                                <dt>Manufacturer Contact Exchange:</dt> 
+                                                <dd id="ddmanufacturer_contact_exchange"></dd>
+                                                
+                                                <dt>Distributor Address 2:</dt> 
+                                                <dd id="dddistributor_address_2"></dd>
+                                                
+                                                <dt>Manufacturer Contact Last Name:</dt> 
+                                                <dd id="ddmanufacturer_contact_t_name"></dd>
+                                                
+                                                <dt>Distributor Address 1:</dt> 
+                                                <dd id="dddistributor_address_1"></dd>
+                                                
+                                                <dt>Manufacturer G1 Address 2:</dt> 
+                                                <dd id="ddmanufacturer_g1_address_2"></dd>
+                                                
+                                                <dt>Health Professional:</dt> 
+                                                <dd id="ddhealth_professional"></dd>
+                                                
+                                                <dt>Initial Report To FDA:</dt> 
+                                                <dd id="ddinitial_report_to_fda"></dd>
+                                                
+                                                <dt>Number Patients In Event:</dt> 
+                                                <dd id="ddnumber_patients_in_event"></dd>
+                                                
+                                                <dt>MDR Report Key:</dt> 
+                                                <dd id="ddmdr_report_key"></dd>
+                                                
+                                                <dt>Report To FDA:</dt> 
+                                                <dd id="ddreport_to_fda"></dd>
+                                                
+                                                <dt>Manufacturer Address 2:</dt> 
+                                                <dd id="ddmanufacturer_address_2"></dd>
+                                                
+                                                <dt>Manufacturer Address 1:</dt> 
+                                                <dd id="manufacturer_address_1"></dd>
+                                                
+                                                <dt>Manufacturer G1 Name:</dt> 
+                                                <dd id="ddmanufacturer_g1_name"></dd>
+                                                
+                                                <dt>Manufacturer Contact Zip Ext:</dt> 
+                                                <dd id="ddmanufacturer_contact_zip_ext"></dd>
+                                                
+                                                <dt>Manufacturer Contact l Name:</dt> 
+                                                <dd id="ddmanufacturer_contact_l_name"></dd>
+
+                                               
+                                                <div class="col-md-12 col-lg-12 Devpoo1-no-padding">
+                                                <ul class="breadcrumb contentpage margin-top20 Devpoo1-breadcrumb">
+                                                    <li><h4>Device</h4></li>           
+                                                </ul>
+                                               </div>
+                                               
+                                               
+                                               <dt>Date Removed Flag:</dt> 
+                                                <dd id="dddate_removed_flag">B</dd>
+                                                
+                                                <dt>Other Id Number:</dt> 
+                                                <dd id="ddother_id_number">NA</dd>
+                                                
+                                                <dt>Manufacturer Zip Code Ext:</dt> 
+                                                <dd id="manufacturer_d_zip_code_ext"></dd>
+                                                
+                                                <dt>Baselin 510 Number:</dt> 
+                                                <dd id="ddbaseline_510_k__number"></dd>
+                                                
+                                                <dt>Implant Flag:</dt> 
+                                                <dd id="ddimplant_flag">N</dd>
+                                                
+                                                <dt>Device Operator:</dt> 
+                                                <dd id="dddevice_operator"></dd>
+                                                
+                                                
+                                                <dt>Brand Name:</dt> 
+                                                <dd id="ddbrand_name"></dd>
+                                                
+                                                <dt>Lot Number:</dt> 
+                                                <dd id="ddlot_number">NA</dd>
+                                                
+                                                <dt>Manufacturer State:</dt> 
+                                                <dd id="ddmanufacturer_d_state"></dd>
+                                                
+                                                <dt>generic_name:</dt> 
+                                                <dd id="ddgeneric_name"></dd>
+                                                
+                                                
+                                                <dt>Manufacturer Name:</dt> 
+                                                <dd id="ddmanufacturer_d_name"></dd>
+                                                
+                                                <dt>Device Availability:</dt> 
+                                                <dd id="dddevice_availability"></dd>
+                                                
+                                                <dt>Manufacturer City:</dt> 
+                                                <dd id="ddmanufacturer_d_city"></dd>
+                                                
+                                                <dt>Device Sequence number:</dt> 
+                                                <dd id="dddevice_sequence_number">1</dd>
+                                                
+                                                <dt>Device Age Text:</dt> 
+                                                <dd id="dddevice_age_text"></dd>
+                                                
+                                                <dt>Catalog Number:</dt> 
+                                                <dd id="ddcatalog_number">MD0100</dd>
+                                                
+                                                <dt>Baseline 510 K Exempt Flag:</dt> 
+                                                <dd id="ddbaseline_510_k__exempt_flag"></dd>
+                                                
+                                               
+                                                
+                                                <dt>Manufacturer Address 2:</dt> 
+                                                <dd id="ddmanufacturer_d_address_2"></dd>
+                                                
+                                                <dt>Manufacturer Address 1:</dt> 
+                                                <dd id="ddmanufacturer_d_address_1"></dd>
+                                                
+                                                <dt>Manufacturer Postal Code:</dt> 
+                                                <dd id="ddmanufacturer_d_postal_code"></dd>
+                                                
+                                                <dt>Baseline 510 K Glag:</dt> 
+                                                <dd id="ddbaseline_510_k__flag"></dd>
+                                                
+                                                <dt>Model Number:</dt> 
+                                                <dd id="ddmodel_number">NA</dd>
+                                                
+                                                <dt>Manufacturer Zip Code:</dt> 
+                                                <dd id="ddmanufacturer_d_zip_code"></dd>
+                                                
+                                                <dt>Device Report Product Code:</dt> 
+                                                <dd id="device_report_product_code"></dd>
+                                                
+                                                <dt>Date Returned To Manufacturer:</dt> 
+                                                <dd id="dddate_returned_to_manufacturer"></dd>
+                                                
+                                                <dt>Manufacturer Country:</dt> 
+                                                <dd id="ddmanufacturer_d_country"></dd>
+                                                
+                                                <dt>Device Event Key:</dt> 
+                                                <dd id="dddevice_event_key"></dd>
+                                                
+                                                <dt>Device Evaluated By Manufacturer:</dt> 
+                                                <dd id="dddevice_evaluated_by_manufacturer">Y</dd>
+
+                                               
+                                               
+                                               
+                                            </dl>
+                                           <!-- / list -->         
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                         </div>
+                      </div>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                   
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                   
+                   
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<footer class="container-fluid">
+<div class="container no-padding tableleftright">
+	<div class="col-lg-12 Devpoo1-fda-logo Devpoo1-footer-heading" style="height:60px;background-color:#003152;">
+    	
+         <div class="col-lg-12 Devpoo1-copyrht text-center">
+         <p>&copy; 18F Prototype 2015</p>
+         </div>
+    </div>
+    <div class="Devpoo1-footer-content">
+    <div class="col-sm-5 col-md-12 col-lg-6">         
+     </div>
+    
+    </div>
+</div>	
+</footer>
+
+
+</body>
+</html>
